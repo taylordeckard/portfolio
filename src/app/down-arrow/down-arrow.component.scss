@@ -1,0 +1,39 @@
+:host {
+  .down-arrow {
+    height: 100px;
+    width: 100px;
+    position: relative;
+    animation-name: pulse-x;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease;
+    cursor: pointer;
+    transition: transform .2s;
+    path:nth-child(2) {
+      fill: white;
+      transition: opacity .2s;
+    }
+    &:hover {
+      transform: scale(1.2);
+    }
+    &:active {
+      transform: scale(1.2) translateY(4px);
+    }
+    &.hidden {
+      transform: translateY(-100px);
+      path {
+        opacity: 0;
+      }
+    }
+  }
+  @keyframes pulse-x {
+    0%, 100% {
+      opacity: .75;
+      top: 0;
+    }
+    50% { 
+      opacity: 1;
+      top: 10px;
+    }
+  }
+}

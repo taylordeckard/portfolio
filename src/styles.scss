@@ -1,0 +1,8 @@
+@import './app/vars.scss';
+
+body {
+  margin: 0;
+  background: $bg-color;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  overflow: auto;
+}

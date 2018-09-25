@@ -1,0 +1,17 @@
+@import '../vars.scss';
+
+:host {
+  .header {
+    @extend .noselect;
+    background: rgba(0,0,0,0);
+    position: absolute;
+    top: calc(50vh - 26px);
+    left: 20px;
+    text-shadow: 2px 2px 2px black;
+    &.fixed {
+      position: fixed;
+      top: -10px;
+    }
+    z-index: 2;
+  }
+}
