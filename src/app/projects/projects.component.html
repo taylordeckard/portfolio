@@ -1,1 +1,9 @@
-<div #projects class="projects"></div>
+<div #projects class="projects">
+  <div #card *ngFor="let project of projectList" class="project">
+    <div class="project__name" [innerHTML]="project.name" (click)="navigateTo(project.link)"></div>
+    <div class="project__img">
+      <img [src]="project.imageSrc">
+    </div>
+  </div>
+  <div class="spacer">
+</div>
