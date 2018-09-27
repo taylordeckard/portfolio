@@ -25,15 +25,8 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit () {
     this.scrollSub = this.scrollService.scrollSubject.subscribe(scroll => {
-      const isScrollBottom = window.innerHeight + scroll.top >= scroll.height;
-      if (isScrollBottom) {
-        this.renderer.addClass(this.projects.nativeElement, 'show');
-        this.cardElems.forEach((card: Element, idx: number) => {
-          this.renderer.setStyle(card, 'transition-delay', `${(idx + 1) * .2}s`);
-        });
-      } else {
-        this.renderer.removeClass(this.projects.nativeElement, 'show');
-      }
+      this.animateBg(scroll);
+      this.animateCards(scroll);
     });
   }
 
@@ -47,6 +40,28 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnDestroy () {
     this.scrollSub.unsubscribe();
+  }
+
+  animateCards (scroll) {
+    if (scroll.top + window.innerHeight >= scroll.height) {
+      this.renderer.addClass(this.projects.nativeElement, 'show');
+      this.cardElems.forEach((card: Element, idx: number) => {
+        this.renderer.setStyle(card, 'transition-delay', `${(idx + 1) * .2}s`);
+      });
+    } else {
+      this.renderer.removeClass(this.projects.nativeElement, 'show');
+    }
+  }
+
+  animateBg (scroll) {
+    const halfScreenHeight = window.innerHeight / 2;
+    const scrollLeftAtHalfway = scroll.height - (window.innerHeight + halfScreenHeight + 40);
+    const scrollLeft = scroll.height - scroll.top - window.innerHeight;
+    let posX = `-${(100 / scrollLeftAtHalfway) * scrollLeft}vw`;
+    if (scroll.top < halfScreenHeight) {
+      posX = '-100vw';
+    }
+    this.renderer.setAttribute(this.projects.nativeElement, 'style', `--pos-x: translateX(${posX});`);
   }
 
   onClick () {

@@ -3,6 +3,7 @@ export interface Project {
   imageSrc: string;
   templateSrc: string;
   link: string;
+  github: string;
 }
 
 export const ProjectList: Project[] = [
@@ -11,5 +12,6 @@ export const ProjectList: Project[] = [
     imageSrc: '../assets/jprdy.jpg',
     templateSrc: '../templates/jprdy.html',
     link: 'https://www.taylordeckard.me/jprdy',
+    github: 'https://github.com/taylordeckard/jeopardy',
   },
 ];
