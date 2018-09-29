@@ -31,19 +31,20 @@
 
     .project {
       background: white;
-      min-width: 400px;
       height: 400px;
+      width: 400px;
+      min-width: 400px;
       box-shadow: -4px -4px 4px rgba(0,0,0,.25);
       border-radius: 3px;
       margin: 20px;
       opacity: 0;
       transform: scale(1.05);
       transform-style: preserve-3d;
-      transition: transform 1s, opacity 1s, box-shadow 1s;
-      &:hover {
+      transition: transform 1s, opacity 1s, box-shadow 1s, height .2s, width .2s;
+      &:not(.expanded):hover {
         transform: rotateX(-1deg);
         box-shadow: 4px 4px 4px rgba(0,0,0,.25);
-        .project__github {
+        .project__github, .project__description {
           box-shadow: 2px 2px 2px rgba(0,0,0,.75);
         }
       }
@@ -53,11 +54,19 @@
         color: $bg-color;
         padding: 16px;
         cursor: pointer;
-        transition: color .2s;
+        transition: background .2s, color .2s;
         &:hover {
+          border-radius: 3px;
+          background: #dfdfdf;
           color: lighten($bg-color, 20%);
         }
       }
+	  .project__buttons {
+        display: inline-flex;
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+	  }
       .project__img {
         width: 100%;
         height: 302px;
@@ -68,17 +77,16 @@
           box-shadow: -1px -1px 1px rgba(0,0,0,.25),
         }
       }
-      .project__github {
+      .project__github, .project__description {
         width: 40px;
         height: 40px;
         box-shadow: -2px -2px 2px rgba(0,0,0,.75);
-        position: absolute;
-        bottom: 6px;
-        right: 6px;
         background: white;
         border-radius: 40px;
         cursor: pointer;
         transition: box-shadow 2s, background .2s;
+		position: relative;
+		margin-right: 6px;
         &:after {
           content: "";
           background: radial-gradient(rgba(0,0,0,.5) 10%, rgba(0, 0, 0, 0.15) 35%, transparent 80%);
@@ -90,7 +98,7 @@
           opacity: 0;
         }
         &:active {
-          bottom: 5px;
+          bottom: -1px;
           transition: box-shadow .2s, background .2s;
           box-shadow: none;
           &:after {
@@ -104,6 +112,30 @@
           position: absolute;
           top: 2px;
           left: 2px;
+        }
+      }
+      .project__description img {
+        height: 30px;
+        left: 6px;
+        top: 4px;
+      }
+      &.expanded {
+        height: calc(100% - 40px);
+        width: calc(100% - 40px);
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+    }
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      right: 56px;
+      top: 34px;
+      opacity: 0;
+      transition: opacity .2s;
+      &:hover {
+        path:first-child {
+          fill: green;
         }
       }
     }

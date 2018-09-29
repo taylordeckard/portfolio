@@ -1,4 +1,43 @@
 @import './app/vars.scss';
+@import './grid.scss';
+
+$base-margin: 20px;
+$dbl-margin: 2 * $base-margin;
+$half-margin: .5 * $base-margin;
+$qtr-margin: .25 * $base-margin;
+$sides: 'left', 'top', 'right', 'bottom';
+.base-margin {
+  @each $side in $sides {
+    &-#{$side} {
+      margin-#{$side}: $base-margin;
+    }
+  }
+}
+.dbl-margin {
+  @each $side in $sides {
+    &-#{$side} {
+      margin-#{$side}: $dbl-margin;
+    }
+  }
+}
+.half-margin {
+  @each $side in $sides {
+    &-#{$side} {
+      margin-#{$side}: $half-margin;
+    }
+  }
+}
+.qtr-margin {
+  @each $side in $sides {
+    &-#{$side} {
+      margin-#{$side}: $qtr-margin;
+    }
+  }
+}
+
+.text-center {
+  text-align: center;
+}
 
 body {
   margin: 0;

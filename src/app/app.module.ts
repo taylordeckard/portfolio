@@ -7,15 +7,22 @@ import { TdHeaderComponent } from './header/header.component';
 import { TdProjectsComponent } from './projects/projects.component';
 import { TdScrollDirective } from './scroll.directive';
 import { TdScrollService } from './scroll.service';
-
+import { TdJprdyComponent } from './jprdy/jprdy.component';
+import { DCLDirective } from './DCLDirective';
 
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
+    DCLDirective,
     TdDownArrowComponent,
     TdHeaderComponent,
+    TdJprdyComponent,
     TdProjectsComponent,
     TdScrollDirective,
+  ],
+  entryComponents: [
+    TdJprdyComponent,
   ],
   imports: [
     BrowserModule
@@ -23,6 +30,5 @@ import { TdScrollService } from './scroll.service';
   providers: [
     TdScrollService,
   ],
-  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,12 +1,33 @@
 <div #projects class="projects">
-  <div #card *ngFor="let project of projectList" class="project">
-    <div class="project__name" [innerHTML]="project.name" (click)="navigateTo(project.link)"></div>
-    <div class="project__img">
-      <img [src]="project.imageSrc">
+  <div #card *ngFor="let project of projectList; let i = index" class="project"
+    [ngClass]="{ 'expanded': showDescription }">
+    <div [hidden]="showDescription">
+      <div class="project__name" [innerHTML]="project.name"
+        (click)="navigateTo(project.link)"></div>
+      <div class="project__img">
+        <img [src]="project.imageSrc">
+      </div>
+      <div class="project__buttons">
+        <div class="project__description" (click)="openDescription(project)"
+          title="Description">
+          <img src="../../assets/description.svg">
+        </div>
+        <div class="project__github" (click)="navigateTo(project.github)"
+          title="View Project on Github">
+          <img src="../../assets/github.svg">
+        </div>
+      </div>
     </div>
-    <div class="project__github" (click)="navigateTo(project.github)" title="View Project on Github">
-      <img src="../../assets/github.svg">
+    <div [hidden]="!showDescription">
+      <ng-template td-dcl></ng-template>
     </div>
   </div>
-  <div class="spacer">
+  <div class="spacer"></div>
+  <div #closeBtn [hidden]="!showDescription" class="close-btn" (click)="closeDescription()">
+    <svg width="24" height="24" viewBox="0 0 24 24">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59
+      19 19 17.59 13.41 12z"/>
+      <path d="M0 0h24v24H0z" fill="none"/>
+    </svg>
+  </div>
 </div>

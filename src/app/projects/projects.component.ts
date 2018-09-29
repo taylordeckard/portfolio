@@ -1,10 +1,11 @@
 import {
-  AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, Renderer2, ViewChild,
-  ViewChildren,
+  AfterViewInit, Component, ComponentFactoryResolver, ElementRef, OnDestroy, OnInit, QueryList,
+  Renderer2, ViewChild, ViewChildren,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TdScrollService } from '../scroll.service';
 import { Project, ProjectList } from './projects-list.const';
+import { DCLDirective } from '../DCLDirective';
 
 @Component({
   selector: 'td-projects',
@@ -12,13 +13,18 @@ import { Project, ProjectList } from './projects-list.const';
   styleUrls: ['./projects.component.scss']
 })
 export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
-  scrollSub: Subscription;
-  cardSub: Subscription;
-  @ViewChild('projects') projects: ElementRef;
-  projectList: Project[] = ProjectList;
   @ViewChildren('card') cards: QueryList<ElementRef>;
+  @ViewChild('closeBtn') closeBtn: ElementRef;
+  @ViewChild('projects') projects: ElementRef;
+  @ViewChild(DCLDirective) dcl: DCLDirective;
   cardElems: Element[];
+  cardSub: Subscription;
+  projectList: Project[] = [...ProjectList];
+  scrollSub: Subscription;
+  showDescription = false;
+
   constructor (
+    private componentFactoryResolver: ComponentFactoryResolver,
     private scrollService: TdScrollService,
     private renderer: Renderer2,
   ) {}
@@ -73,5 +79,40 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   navigateTo (link: string) {
     window.location.href = link;
+  }
+  openDescription (project: Project) {
+    this.projectList = this.projectList.filter((p: Project) => p.name === project.name);
+    this.showDescription = true;
+    const componentFactory = this.componentFactoryResolver
+      .resolveComponentFactory(project.templateCmpnt);
+    this.dcl.viewContainerRef.clear();
+    this.dcl.viewContainerRef.createComponent(componentFactory);
+    this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 13);
+    this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', this.preventDefault.bind(this));
+    this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', this.preventDefault.bind(this));
+    setTimeout(() => {
+      this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 1);
+    }, 800);
+  }
+
+  closeDescription () {
+    setTimeout(() => {
+      this.projectList = [...ProjectList];
+    }, 200);
+    this.showDescription = false;
+    this.dcl.viewContainerRef.clear();
+    this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 0);
+    this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', null);
+    this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', null);
+    this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 0);
+  }
+
+  preventDefault(e: Event) {
+    e = e || window.event;
+    // prevent scrolling for the 'projects' element
+    if ((<Element>e.target).className === this.projects.nativeElement.className) {
+      if (e.preventDefault) { e.preventDefault(); }
+      e.returnValue = false;
+    }
   }
 }

@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  color: #58585b;
+  transition: opacity .4s;
+  opacity: 0;
+  .container {
+    height: 100%;
+    margin: 40px;
+    @media screen and (max-width: 800px) {
+      width: 100%;
+    }
+    @media screen and (min-width: 800px) {
+      width: 60%;
+    }
+    h1 {
+      color: #051C82;
+    }
+    .text {
+      text-align: justify;
+      font-size: 24px;
+    }
+    .jprdy-img { height: 300px; }
+  }
+}
