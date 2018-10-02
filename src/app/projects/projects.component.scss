@@ -154,6 +154,12 @@
       box-shadow: none;
       display: block;
       overflow-x: unset;
+      .close-btn {
+        opacity: 1;
+        z-index: 1;
+        left: calc(50vw - 24px);
+        top: 8px;
+      }
       .project {
         opacity: 1;
         margin: 0;

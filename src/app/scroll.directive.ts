@@ -25,7 +25,8 @@ export class TdScrollDirective implements AfterViewInit, OnDestroy {
 
   onWindowMove ($event: Event) {
     const doc = (<Document>($event && $event.target));
-    const elem = doc ? doc.documentElement : document.body;
+    const elem = this.util.isMobile ? document.body : ((doc && doc.documentElement)
+      || document.documentElement);
     this.scrollService.scrollTop = elem.scrollTop;
     this.scrollService.scrollHeight = elem.scrollHeight;
   }

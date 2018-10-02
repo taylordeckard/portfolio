@@ -33,12 +33,12 @@
     </section>
   </div>
   <h1>PRODUCTION ARCHITECTURE</h1>
-  <div class="col-12 text-center">
-    <img class="prod-arch-img" src="../../assets/prod-arch.png">
-  </div>
   <div class="row">
     <section class="col-12 text half-margin-top">
       For production, I'm running JPRDY! on a Raspberry Pi with the same docker-compose setup used to develop locally. The nginx port on the Pi is exposed to my home network. External requests to <a href="https://www.taylordeckard.me/jprdy">taylordeckard.me/jprdy</a> are proxied from another server running apache. The overall architecture looks like this:
     </section>
+  </div>
+  <div class="col-12 text-center">
+    <img class="prod-arch-img" src="../../assets/prod-arch.png">
   </div>
 </div>
