@@ -28,7 +28,7 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     private scrollService: TdScrollService,
     private renderer: Renderer2,
-    private util: UtilityService,
+    public util: UtilityService,
   ) {}
 
   ngOnInit () {
