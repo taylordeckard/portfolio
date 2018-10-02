@@ -4,10 +4,16 @@
 	color: $text-color;
 	.hero {
 		padding: 20px 20px;
-		height: 50vh;
 		background-image: url(../assets/hero1.jpg);
 		background-attachment: fixed;
-		background-size: cover;
+		@media screen and (max-width: 600px) {
+			background-size: contain;
+			height: 35vh;
+		}
+		@media screen and (min-width: 600px) {
+			background-size: cover;
+			height: 80vh;
+		}
 		background-repeat: no-repeat;
 		margin: 0;
 		background-position-x: center;

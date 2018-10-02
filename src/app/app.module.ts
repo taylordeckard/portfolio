@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { TdDownArrowComponent } from './down-arrow/down-arrow.component';
 import { TdHeaderComponent } from './header/header.component';
+import { TdJprdyComponent } from './jprdy/jprdy.component';
 import { TdProjectsComponent } from './projects/projects.component';
+import { TdResizeDirective } from './resize.directive';
 import { TdScrollDirective } from './scroll.directive';
 import { TdScrollService } from './scroll.service';
-import { TdJprdyComponent } from './jprdy/jprdy.component';
 import { DCLDirective } from './DCLDirective';
+import { UtilityService } from './utility.service';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -19,6 +21,7 @@ import { DCLDirective } from './DCLDirective';
     TdHeaderComponent,
     TdJprdyComponent,
     TdProjectsComponent,
+    TdResizeDirective,
     TdScrollDirective,
   ],
   entryComponents: [
@@ -29,6 +32,7 @@ import { DCLDirective } from './DCLDirective';
   ],
   providers: [
     TdScrollService,
+    UtilityService,
   ],
 })
 export class AppModule { }

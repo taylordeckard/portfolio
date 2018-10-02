@@ -5,12 +5,24 @@
     @extend .noselect;
     background: rgba(0,0,0,0);
     position: absolute;
-    top: calc(50vh - 26px);
+	@media screen and (max-width: 600px) {
+		top: calc(35vh - 26px);
+	}
+	@media screen and (min-width: 600px) {
+		top: calc(80vh - 26px);
+	}
     left: 20px;
     text-shadow: 2px 2px 2px black;
+	transition: background .4s;
     &.fixed {
       position: fixed;
       top: -10px;
+	  left: 0;
+	  right: 0;
+	  padding-left: 20px;
+	  @media screen and (max-width: 600px) {
+		  background: lighten($bg-color, 10%);
+	  }
     }
     z-index: 2;
   }

@@ -1,22 +1,36 @@
-import { AfterViewInit, Directive, ElementRef, HostListener } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { TdScrollService } from './scroll.service';
+import { UtilityService } from './utility.service';
 
 @Directive({
   selector: '[tdScroll]',
 })
-export class TdScrollDirective implements AfterViewInit {
+export class TdScrollDirective implements AfterViewInit, OnDestroy {
+  onWindowMoveBound = this.onWindowMove.bind(this);
   @HostListener('window:scroll', ['$event'])
   onScroll($event: Event) {
-    const doc = <Document>$event.target;
-    this.scrollService.scrollTop = doc.documentElement.scrollTop;
-    this.scrollService.scrollHeight = doc.documentElement.scrollHeight;
+    this.onWindowMove($event);
   }
   constructor (
     private scrollService: TdScrollService,
     private elem: ElementRef,
-  ) {}
+    private util: UtilityService,
+  ) {
+    document.addEventListener('touchmove', this.onWindowMoveBound());
+  }
 
   ngAfterViewInit () {
     this.scrollService.scrollHeight = this.elem.nativeElement.scrollHeight;
+  }
+
+  onWindowMove ($event: Event) {
+    const doc = (<Document>($event && $event.target));
+    const elem = doc ? doc.documentElement : document.body;
+    this.scrollService.scrollTop = elem.scrollTop;
+    this.scrollService.scrollHeight = elem.scrollHeight;
+  }
+
+  ngOnDestroy () {
+    document.removeEventListener('touchmove', this.onWindowMoveBound());
   }
 }

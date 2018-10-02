@@ -1,19 +1,19 @@
-<div #projects class="projects">
+<div #projects class="projects" *ngIf="!util.isMobile; else projectsMobile">
   <div #card *ngFor="let project of projectList; let i = index" class="project"
-    [ngClass]="{ 'expanded': showDescription }">
+                                                                [ngClass]="{ 'expanded': showDescription }">
     <div [hidden]="showDescription">
       <div class="project__name" [innerHTML]="project.name"
-        (click)="navigateTo(project.link)"></div>
+           (click)="navigateTo(project.link)"></div>
       <div class="project__img">
         <img [src]="project.imageSrc">
       </div>
       <div class="project__buttons">
         <div class="project__description" (click)="openDescription(project)"
-          title="Description">
+             title="Description">
           <img src="../../assets/description.svg">
         </div>
         <div class="project__github" (click)="navigateTo(project.github)"
-          title="View Project on Github">
+             title="View Project on Github">
           <img src="../../assets/github.svg">
         </div>
       </div>
@@ -31,3 +31,30 @@
     </svg>
   </div>
 </div>
+<ng-template #projectsMobile>
+  <div class="projects projects--mobile">
+    <div #card *ngFor="let project of projectList; let i = index" class="project"
+      [ngClass]="{ 'expanded': showDescription }">
+      <div [hidden]="showDescription">
+        <div class="project__name" [innerHTML]="project.name"
+             (click)="navigateTo(project.link)"></div>
+        <div class="project__img">
+          <img [src]="project.imageSrc">
+        </div>
+        <div class="project__buttons">
+          <div class="project__description" (click)="openDescription(project)"
+               title="Description">
+            <img src="../../assets/description.svg">
+          </div>
+          <div class="project__github" (click)="navigateTo(project.github)"
+               title="View Project on Github">
+            <img src="../../assets/github.svg">
+          </div>
+        </div>
+      </div>
+      <div [hidden]="!showDescription">
+        <ng-template td-dcl></ng-template>
+      </div>
+    </div>
+  </div>
+</ng-template>

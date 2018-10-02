@@ -1,6 +1,7 @@
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TdScrollService } from '../scroll.service';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'td-header',
@@ -11,15 +12,19 @@ export class TdHeaderComponent implements OnDestroy, OnInit {
   @ViewChild('header') header: ElementRef;
   headerFixed: boolean;
   scrollSub: Subscription;
+  scroll: any;
   constructor (
+    private cdr: ChangeDetectorRef,
     private scrollService: TdScrollService,
     private renderer: Renderer2,
+    private util: UtilityService,
   ) {}
 
   ngOnInit () {
     this.scrollSub = this.scrollService.scrollSubject.subscribe(scroll => {
+      this.scroll = scroll;
       // fix header to top after scrolling down half of the screen height
-      const halfScreenHeight = window.innerHeight / 2;
+      const halfScreenHeight = window.innerHeight * this.util.heroHeight;
       if (scroll.top >= halfScreenHeight - 20) {
           this.renderer.addClass(this.header.nativeElement, 'fixed');
       } else {
@@ -34,6 +39,7 @@ export class TdHeaderComponent implements OnDestroy, OnInit {
           this.headerFixed = false;
         }
       }
+      this.cdr.detectChanges();
     });
   }
 

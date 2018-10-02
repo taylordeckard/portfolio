@@ -21,6 +21,15 @@
       text-align: justify;
       font-size: 24px;
     }
-    .jprdy-img { height: 300px; }
+    @media screen and (min-width: 600px) {
+      .jprdy-img { height: 300px; }
+    }
+    @media screen and (max-width: 600px) {
+      img {
+        width: 95%;
+        height: auto;
+      }
+      .text { font-size: 14px; }
+    }
   }
 }

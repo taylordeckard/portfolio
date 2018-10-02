@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { TdScrollService } from '../scroll.service';
 import { Project, ProjectList } from './projects-list.const';
 import { DCLDirective } from '../DCLDirective';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'td-projects',
@@ -27,12 +28,15 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
     private componentFactoryResolver: ComponentFactoryResolver,
     private scrollService: TdScrollService,
     private renderer: Renderer2,
+    private util: UtilityService,
   ) {}
 
   ngOnInit () {
     this.scrollSub = this.scrollService.scrollSubject.subscribe(scroll => {
-      this.animateBg(scroll);
-      this.animateCards(scroll);
+      if (!this.util.isMobile) {
+        this.animateBg(scroll);
+        this.animateCards(scroll);
+      }
     });
   }
 
@@ -60,14 +64,17 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   animateBg (scroll) {
-    const halfScreenHeight = window.innerHeight / 2;
+    const halfScreenHeight = window.innerHeight * this.util.heroHeight;
     const scrollLeftAtHalfway = scroll.height - (window.innerHeight + halfScreenHeight + 40);
     const scrollLeft = scroll.height - scroll.top - window.innerHeight;
     let posX = `-${(100 / scrollLeftAtHalfway) * scrollLeft}vw`;
     if (scroll.top < halfScreenHeight) {
       posX = '-100vw';
     }
-    this.renderer.setAttribute(this.projects.nativeElement, 'style', `--pos-x: translateX(${posX});`);
+    window.requestAnimationFrame(() => {
+      this.renderer
+        .setAttribute(this.projects.nativeElement, 'style', `--pos-x: translateX(${posX});`);
+    });
   }
 
   onClick () {
@@ -87,12 +94,14 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
       .resolveComponentFactory(project.templateCmpnt);
     this.dcl.viewContainerRef.clear();
     this.dcl.viewContainerRef.createComponent(componentFactory);
-    this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 13);
-    this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', this.preventDefault.bind(this));
-    this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', this.preventDefault.bind(this));
-    setTimeout(() => {
-      this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 1);
-    }, 800);
+    if (!this.util.isMobile) {
+      this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 13);
+      this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', this.preventDefault.bind(this));
+      this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', this.preventDefault.bind(this));
+      setTimeout(() => {
+        this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 1);
+      }, 800);
+    }
   }
 
   closeDescription () {
@@ -101,10 +110,12 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
     }, 200);
     this.showDescription = false;
     this.dcl.viewContainerRef.clear();
-    this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 0);
-    this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', null);
-    this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', null);
-    this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 0);
+    if (!this.util.isMobile) {
+      this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 0);
+      this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', null);
+      this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', null);
+      this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 0);
+    }
   }
 
   preventDefault(e: Event) {
