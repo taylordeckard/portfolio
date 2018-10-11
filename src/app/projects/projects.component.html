@@ -4,7 +4,7 @@
     <div [hidden]="showDescription">
       <div class="project__name" [innerHTML]="project.name"
            (click)="navigateTo(project.link)"></div>
-      <div class="project__img">
+      <div class="project__img" (click)="navigateTo(project.link)">
         <img [src]="project.imageSrc">
       </div>
       <div class="project__buttons">
@@ -44,7 +44,7 @@
       <div [hidden]="showDescription">
         <div class="project__name" [innerHTML]="project.name"
              (click)="navigateTo(project.link)"></div>
-        <div class="project__img">
+        <div class="project__img" (click)="navigateTo(project.link)">
           <img [src]="project.imageSrc">
         </div>
         <div class="project__buttons">
