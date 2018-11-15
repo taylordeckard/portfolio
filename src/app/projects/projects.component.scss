@@ -41,12 +41,15 @@
       transform: scale(1.05);
       transform-style: preserve-3d;
       transition: transform 1s, opacity 1s, box-shadow 1s, height .2s, width .2s;
-      &:not(.expanded):hover {
+      &:hover {
         transform: rotateX(-1deg);
         box-shadow: 4px 4px 4px rgba(0,0,0,.25);
         .project__github, .project__description {
           box-shadow: 2px 2px 2px rgba(0,0,0,.75);
         }
+      }
+      .project-card {
+        animation: fadein 1s;
       }
       .project__name {
         font-size: 24px;
@@ -119,11 +122,31 @@
         left: 6px;
         top: 4px;
       }
-      &.expanded {
-        height: calc(100% - 40px);
-        width: calc(100% - 40px);
-        overflow-y: auto;
-        overflow-x: hidden;
+      &__details {
+        position: absolute;
+        background: white;
+        top: 20px;
+        bottom: 10px;
+        left: 20px;
+        right: 20px;
+        overflow: auto;
+        box-shadow: -4px -4px 4px rgba(0,0,0,.25);
+        opacity: 0;
+        transform: translateY(-100vh);
+        transition: transform .5s ease-in, opacity .7s;
+        &.hide {
+          animation-name: slideup;
+          animation-duration: .6s;
+          animation-iteration-count: 1;
+          animation-fill-mode: forwards;
+        }
+        &.show {
+          animation-name: bouncedown;
+          animation-duration: 1s;
+          animation-iteration-count: 1;
+          animation-fill-mode: forwards;
+          animation-timing-function: ease-in;
+        }
       }
     }
     .close-btn {
@@ -154,31 +177,66 @@
       box-shadow: none;
       display: block;
       overflow-x: unset;
-      .close-btn {
-        opacity: 1;
-        z-index: 1;
-        left: calc(50vw - 24px);
-        top: 8px;
-      }
       .project {
         opacity: 1;
         margin: 0;
+        margin-top: 50px;
         min-width: auto;
         border-radius: 0;
+        &.expanded {
+          height: fit-content;
+        }
         &__name {
           padding: 28px 28px 18px 40px !important;
         }
         &__buttons {
           right: 26px !important;
         }
-        &.expanded {
-          width: 100vw;
-          height: auto;
-          overflow-x: unset;
-          overflow-y: unset;
-          transform: none;
-        }
       }
     }
   }
+  .mobile--project__details {
+    .close-btn {
+      cursor: pointer;
+      position: absolute;
+      right: 56px;
+      top: 34px;
+      &:hover {
+        path:first-child {
+          fill: green;
+        }
+      }
+      opacity: 1;
+      z-index: 1;
+      left: calc(50vw - 24px);
+    }
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #f2f2f2;
+    box-shadow: 0 0 black;
+    overflow: auto;
+    z-index: 200;
+    animation-name: fadein;
+    animation-iteration-count: 1;
+    animation-duration: .4s;
+  }
+}
+
+@keyframes slideup {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-100vh); }
+}
+@keyframes bouncedown {
+  0%    { opacity:  0;  transform: translateY(-100vh); }
+  60%   { opacity: .7;  transform: translateY(0); }
+  70%   { opacity:  1;  transform: translateY(-40px); }
+  80%   { opacity:  1;  transform: translateY(0px); }
+  90%   { opacity:  1;  transform: translateY(-15px); }
+  100%  { opacity:  1;  transform: translateY(0); }
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

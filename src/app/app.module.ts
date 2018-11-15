@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { TdDownArrowComponent } from './down-arrow/down-arrow.component';
 import { TdHeaderComponent } from './header/header.component';
 import { TdJprdyComponent } from './jprdy/jprdy.component';
+import { TdPasswdComponent } from './passwd/passwd.component';
 import { TdProjectsComponent } from './projects/projects.component';
 import { TdResizeDirective } from './resize.directive';
 import { TdScrollDirective } from './scroll.directive';
@@ -20,12 +21,14 @@ import { UtilityService } from './utility.service';
     TdDownArrowComponent,
     TdHeaderComponent,
     TdJprdyComponent,
+    TdPasswdComponent,
     TdProjectsComponent,
     TdResizeDirective,
     TdScrollDirective,
   ],
   entryComponents: [
     TdJprdyComponent,
+    TdPasswdComponent,
   ],
   imports: [
     BrowserModule

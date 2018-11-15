@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="header">
+    <h1>passwd</h1>
+    <small class="base-margin-left">November, 2018</small>
+  </div>
+  <div class="row">
+    <section class="col-md-5 text">
+      I have been using <a href="https://www.lastpass.com/">LastPass</a> for a few months now to store my credentials. The cloud-based password manager is a great convenience, as you only have to remember a single "master" password to gain access to all of your other passwords. Also, LastPass will generate secure passwords for you. Since you don't have to remember them,  </section>
+    <div class="col-md-5 text-center">
+      <img class="passwd-img" src="../../assets/passwd.png">
+    </div>
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">
+      you can generate passwords that are almost impossible for a hacker to crack. For instance, brute-force attacking a 12-character password containing one special character could potentially take two centuries.
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">One might be hesitant, however, to put faith in the security of a system that stores and transmits highly sensitive user data over the internet. The <a href="https://www.lastpass.com/security/what-if-lastpass-gets-hacked">security architecture of LastPass</a> is very good, yet has been compromised once before (<a href="https://blog.lastpass.com/2015/06/lastpass-security-notice.html/">Read about it here</a>.)</section>
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">After researching LastPass security, I started thinking of a way save encrypted passwords over the internet that could only be decrypted by the password owner. That is, I want to send my passwords to "Password Manager", but I don't want "Password Manager" to know what my passwords are. Running with this idea, I created a proof-of-concept, <strong>passwd</strong>.</section>
+  </div>
+  <h1>DEVELOPMENT ARCHITECTURE</h1>
+  <div class="col-12 text-center">
+    <img class="dev-arch-img" src="../../assets/passwd-dc-arch.png">
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">I took a minimalist approach with this implementation,  utilizing Angular 7, Node.js (Koa), and Redis in a docker-compose orchestration. Clients are served angular assets via Koa. Session cookies and passwords are stored encrypted in Redis. The Angular application is a PWA (Progressive Web App,) which means it should perform well on mobile devices. An audit in the Chrome inspector gives the <strong>passwd</strong> application a decent score.
+    </section>
+  </div>
+  <div class="col-12 text-center">
+    <img class="audit-img" src="../../assets/passwd-audit.png">
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">The conceptual difference between <strong>passwd</strong> and LastPass is that in <strong>passwd</strong>, users are required to create a "primary" password (to login), as well as a secondary password to encrypt their passwords before the passwords are sent onto the internet. The secondardy password is never sent to the server, so it <em>must be remembered by the user</em> or else all of the user's passwords will be unrecoverable.</section>
+  </div>
+  <div class="row">
+    <section class="col-12 text half-margin-top">Feel free to try it out. You only need to create an account to start storing encrypted credentials. However, be warned, this is merely a proof-of-concept and is not intended for serious use. There is no guarantee that the data you enter will persist. 
+    </section>
+  </div>
+</div>

@@ -18,11 +18,13 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('projects') projects: ElementRef;
   @ViewChild(DCLDirective) dcl: DCLDirective;
+  activeProject: Project;
+  activeProjectSet: boolean;
   cardElems: Element[];
   cardSub: Subscription;
   projectList: Project[] = [...ProjectList];
+  preOpenScroll: number;
   scrollSub: Subscription;
-  showDescription = false;
 
   constructor (
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -84,12 +86,18 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  navigateTo (link: string) {
+  navigateTo (link: string, event: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     window.location.href = link;
   }
-  openDescription (project: Project) {
-    this.projectList = this.projectList.filter((p: Project) => p.name === project.name);
-    this.showDescription = true;
+  openDescription (project: Project, event: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.activeProject = project;
+    this.activeProjectSet = true;
     const componentFactory = this.componentFactoryResolver
       .resolveComponentFactory(project.templateCmpnt);
     this.dcl.viewContainerRef.clear();
@@ -101,20 +109,23 @@ export class TdProjectsComponent implements AfterViewInit, OnDestroy, OnInit {
       setTimeout(() => {
         this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 1);
       }, 800);
+    } else {
+      this.preOpenScroll = this.scrollService.scroll.top;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
   closeDescription () {
-    setTimeout(() => {
-      this.projectList = [...ProjectList];
-    }, 200);
-    this.showDescription = false;
+    const project = this.activeProject;
+    this.activeProject = undefined;
     this.dcl.viewContainerRef.clear();
     if (!this.util.isMobile) {
       this.renderer.setProperty(this.projects.nativeElement, 'scrollLeft', 0);
       this.renderer.setProperty(this.projects.nativeElement, 'onmousewheel', null);
       this.renderer.setProperty(this.projects.nativeElement, 'ontouchmove', null);
       this.renderer.setStyle(this.closeBtn.nativeElement, 'opacity', 0);
+    } else {
+      window.scrollTo({ top: this.preOpenScroll, behavior: 'smooth' });
     }
   }
 

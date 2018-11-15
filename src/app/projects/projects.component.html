@@ -1,29 +1,31 @@
 <div #projects class="projects" *ngIf="!util.isMobile; else projectsMobile">
-  <div #card *ngFor="let project of projectList; let i = index" class="project"
-                                                                [ngClass]="{ 'expanded': showDescription }">
-    <div [hidden]="showDescription">
+  <div #card *ngFor="let project of projectList; let i = index" class="project">
+    <div class="project-card">
       <div class="project__name" [innerHTML]="project.name"
-           (click)="navigateTo(project.link)"></div>
+        (click)="navigateTo(project.link)"></div>
       <div class="project__img" (click)="navigateTo(project.link)">
         <img [src]="project.imageSrc">
       </div>
       <div class="project__buttons">
-        <div class="project__description" (click)="openDescription(project)"
+        <div class="project__description" (click)="openDescription(project, $event)"
              title="Description">
           <img src="../../assets/description.svg">
         </div>
-        <div class="project__github" (click)="navigateTo(project.github)"
+        <div class="project__github" (click)="navigateTo(project.github, $event)"
              title="View Project on Github">
           <img src="../../assets/github.svg">
         </div>
       </div>
     </div>
-    <div [hidden]="!showDescription">
-      <ng-template td-dcl></ng-template>
-    </div>
   </div>
   <div class="spacer"></div>
-  <div #closeBtn [hidden]="!showDescription" class="close-btn" (click)="closeDescription()">
+  <div class="project__details" [ngClass]="{
+    'show': activeProject,
+    'hide': activeProjectSet && !activeProject
+  }">
+	  <ng-template td-dcl></ng-template>
+  </div>
+  <div #closeBtn [hidden]="!activeProject" class="close-btn" (click)="closeDescription()">
     <svg width="24" height="24" viewBox="0 0 24 24">
       <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59
       19 19 17.59 13.41 12z"/>
@@ -33,34 +35,34 @@
 </div>
 <ng-template #projectsMobile>
   <div class="projects projects--mobile">
-    <div #closeBtn [hidden]="!showDescription" class="close-btn" (click)="closeDescription()">
-      <svg width="48" height="48" viewBox="0 0 24 24">
-        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-        <path d="M0 0h24v24H0z" fill="none"/>
-      </svg>
-    </div>
     <div #card *ngFor="let project of projectList; let i = index" class="project"
-      [ngClass]="{ 'expanded': showDescription }">
-      <div [hidden]="showDescription">
+      [ngClass]="{ 'expanded': activeProject }">
+      <div *ngIf="!activeProject">
         <div class="project__name" [innerHTML]="project.name"
              (click)="navigateTo(project.link)"></div>
         <div class="project__img" (click)="navigateTo(project.link)">
           <img [src]="project.imageSrc">
         </div>
         <div class="project__buttons">
-          <div class="project__description" (click)="openDescription(project)"
+          <div class="project__description" (click)="openDescription(project, $event)"
                title="Description">
             <img src="../../assets/description.svg">
           </div>
-          <div class="project__github" (click)="navigateTo(project.github)"
+          <div class="project__github" (click)="navigateTo(project.github, $event)"
                title="View Project on Github">
             <img src="../../assets/github.svg">
           </div>
         </div>
       </div>
-      <div [hidden]="!showDescription">
-        <ng-template td-dcl></ng-template>
-      </div>
     </div>
+  </div>
+  <div class="mobile--project__details" [hidden]="!this.activeProject">
+    <div #closeBtn [hidden]="!activeProject" class="close-btn" (click)="closeDescription()">
+      <svg width="48" height="48" viewBox="0 0 24 24">
+        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+        <path d="M0 0h24v24H0z" fill="none"/>
+      </svg>
+    </div>
+	<ng-template td-dcl></ng-template>
   </div>
 </ng-template>
